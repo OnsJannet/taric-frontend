@@ -37,16 +37,6 @@ const App = () => {
     fetchData();
   };
 
-  const getTitle = (section) => {
-    const titles = {
-      en: { category: 'Category', family: 'Family', suggestions: 'Suggestions' },
-      fr: { category: 'Catégorie', family: 'Famille', suggestions: 'Suggestions' },
-      de: { category: 'Kategorie', family: 'Familie', suggestions: 'Vorschläge' },
-      it: { category: 'Categoria', family: 'Famiglia', suggestions: 'Suggerimenti' }
-    };
-    return titles[language][section];
-  };
-
   const renderSection = (title, items) => (
     items.length > 0 && (
       <div>
@@ -66,7 +56,7 @@ const App = () => {
   return (
     <div className="container mx-auto p-4 font-sans">
       <h1 className="text-2xl font-bold mb-4 text-center">
-        {language === 'en' ? 'Language Selector' : language === 'fr' ? 'Sélecteur de langue' : language === 'de' ? 'Sprachauswahl' : 'Selettore della lingua'}
+        {language === 'en' ? 'Language Selector' : 'Sélecteur de langue'}
       </h1>
       <div className="mb-10 flex justify-center space-x-2">
         <button 
@@ -81,18 +71,6 @@ const App = () => {
         >
           French
         </button>
-        <button 
-          className="bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium"
-          onClick={() => handleLanguageChange('de')}
-        >
-          German
-        </button>
-        <button 
-          className="bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium"
-          onClick={() => handleLanguageChange('it')}
-        >
-          Italian
-        </button>
       </div>
       <div className="mb-4 flex justify-start gap-10">
         <input
@@ -100,18 +78,18 @@ const App = () => {
           value={term}
           onChange={(e) => setTerm(e.target.value)}
           className="border rounded-md w-[80%] px-4 py-2 h-10"
-          placeholder={language === 'en' ? 'Enter search term' : language === 'fr' ? 'Entrez le terme de recherche' : language === 'de' ? 'Suchbegriff eingeben' : 'Inserisci il termine di ricerca'}
+          placeholder={language === 'en' ? 'Enter search term' : 'Entrez le terme de recherche'}
         />
         <button
           onClick={handleValidateClick}
           className="mb-4 bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium w-[20%]"
         >
-          {language === 'en' ? 'Validate' : language === 'fr' ? 'Valider' : language === 'de' ? 'Validieren' : 'Convalidare'}
+          {language === 'en' ? 'Validate' : 'Valider'}
         </button>
       </div>
-      {renderSection(getTitle('category'), suggestions.category)}
-      {renderSection(getTitle('family'), suggestions.family)}
-      {renderSection(getTitle('suggestions'), suggestions.suggestions)}
+      {renderSection(language === 'en' ? 'Category' : 'Catégorie', suggestions.category)}
+      {renderSection(language === 'en' ? 'Family' : 'Famille', suggestions.family)}
+      {renderSection(language === 'en' ? 'Suggestions' : 'Suggestions', suggestions.suggestions)}
     </div>
   );
 };
