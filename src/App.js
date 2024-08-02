@@ -1,12 +1,10 @@
-// src/App.js
-
 import React, { useState, useEffect } from 'react';
 import './index.css';
 
 const App = () => {
   const [language, setLanguage] = useState('en');
   const [term, setTerm] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState({ category: [], family: [], suggestions: [] });
 
   useEffect(() => {
     const loadLanguage = () => {
@@ -23,7 +21,7 @@ const App = () => {
       
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      setSuggestions(data.suggestions || []);
+      setSuggestions(data);
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -39,9 +37,27 @@ const App = () => {
     fetchData();
   };
 
+  const renderSection = (title, items) => (
+    items.length > 0 && (
+      <div>
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <ul>
+          {items.map((item) => (
+            <li key={item.code} className="border p-2 mb-2 rounded-md">
+              <div dangerouslySetInnerHTML={{ __html: item.value }} />
+              <div>Score: {item.score}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  );
+
   return (
     <div className="container mx-auto p-4 font-sans">
-      <h1 className="text-2xl font-bold mb-4 text-center">Language Selector</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        {language === 'en' ? 'Language Selector' : 'Sélecteur de langue'}
+      </h1>
       <div className="mb-10 flex justify-center space-x-2">
         <button 
           className="bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium"
@@ -56,30 +72,24 @@ const App = () => {
           French
         </button>
       </div>
-      <div className="mb-4 flex justify-start gap-10 ">
+      <div className="mb-4 flex justify-start gap-10">
         <input
           type="text"
           value={term}
           onChange={(e) => setTerm(e.target.value)}
           className="border rounded-md w-[80%] px-4 py-2 h-10"
-          placeholder="Enter search term"
+          placeholder={language === 'en' ? 'Enter search term' : 'Entrez le terme de recherche'}
         />
         <button
           onClick={handleValidateClick}
-          className="mb-4 bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium  w-[20%]"
+          className="mb-4 bg-blue-500 text-white hover:bg-blue-700 h-10 px-4 py-2 rounded-md text-sm font-medium w-[20%]"
         >
-          Validate
+          {language === 'en' ? 'Validate' : 'Valider'}
         </button>
-
       </div>
-      <ul>
-          {suggestions.map((item) => (
-            <li key={item.code} className="border p-2 mb-2 rounded-md">
-              <div dangerouslySetInnerHTML={{ __html: item.value }} />
-              <div>Score: {item.score}</div>
-            </li>
-          ))}
-        </ul>
+      {renderSection(language === 'en' ? 'Category' : 'Catégorie', suggestions.category)}
+      {renderSection(language === 'en' ? 'Family' : 'Famille', suggestions.family)}
+      {renderSection(language === 'en' ? 'Suggestions' : 'Suggestions', suggestions.suggestions)}
     </div>
   );
 };
