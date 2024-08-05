@@ -53,7 +53,7 @@ const App = () => {
           {items.map((item) => (
             <li key={item.code} className="border p-2 mb-2 rounded-md">
               <div dangerouslySetInnerHTML={{ __html: item.value }} />
-              <div>Score: {item.score}</div>
+              <div>Score: {(item.score * 100).toFixed(2)}%</div>
               <ul>
                 {item.matches && item.matches.map((match, index) => (
                   <li key={index} className="ml-4 text-gray-600">
@@ -67,6 +67,7 @@ const App = () => {
       </div>
     )
   );
+  
 
   // Define translations
   const translations = {
@@ -153,7 +154,7 @@ const App = () => {
               {matchedSuggestions.map((item, index) => (
                 <li key={index} className="border p-2 mb-2 rounded-md">
                   <div dangerouslySetInnerHTML={{ __html: item.value }} />
-                  {/*<div>Score: {item.score}</div>*/}
+                  <div>Score: {(item.score * 100).toFixed(2)}%</div>
                   <ul>
                     {item.matches && item.matches.map((match, matchIndex) => (
                       <li key={matchIndex} className="ml-4 text-gray-600">
