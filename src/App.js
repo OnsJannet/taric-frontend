@@ -18,7 +18,7 @@ const App = () => {
   const fetchData = async (searchTerm) => {
     if (!searchTerm) return; // Skip fetch if term is empty
     try {
-      const response = await fetch(`https://taric-backend-one.vercel.app/api/suggestions?term=${encodeURIComponent(searchTerm)}&lang=${language}`);
+      const response = await fetch(`https://taric-backend-one.vercel.app/api/goods/suggestions?term=${encodeURIComponent(searchTerm)}&lang=${language}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       // Ensure data has the expected structure
